@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+logs/
+# beam trees written by runs are large; only the three reference trees are kept
+results/**/trees/*.npz
+!results/dedup/trees/percopy_baseline_N32_step32_M2.2.npz
+!results/dedup/trees/percopy_baseline_N32_step64_M2.2.npz
+!results/dedup/trees/percopy_baseline_N32_step128_M2.2.npz

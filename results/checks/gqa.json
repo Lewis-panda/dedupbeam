@@ -1,0 +1,76 @@
+{
+ "ok": true,
+ "fp32_logits_maxdiff": 0.00015354156494140625,
+ "fp32_argmax": 1.0,
+ "fp16_logits_maxdiff": 0.296875,
+ "fp16_argmax": 0.9921875,
+ "fp16_finite": true,
+ "fp16_vs_fp32_maxdiff": 0.23845386505126953,
+ "fp16_vs_fp32_argmax": 1.0,
+ "decode_fp32_lp_maxdiff": 6.29425048828125e-05,
+ "decode_fp16_lp_maxdiff": 0.0351407527923584,
+ "fp16": [
+  {
+   "case": "4 beams / step 32 / gen 64",
+   "ok": true,
+   "A": true,
+   "B": true,
+   "D": true,
+   "free_run_same": false
+  },
+  {
+   "case": "4 beams / step 8 / gen 64",
+   "ok": true,
+   "A": true,
+   "B": true,
+   "D": true,
+   "free_run_same": true
+  },
+  {
+   "case": "8 beams / step 16 / gen 128",
+   "ok": true,
+   "A": true,
+   "B": true,
+   "D": true,
+   "free_run_same": false
+  },
+  {
+   "case": "10 beams / step 32 / gen 192",
+   "ok": true,
+   "A": true,
+   "B": true,
+   "D": true,
+   "free_run_same": false
+  }
+ ],
+ "fp32": [
+  {
+   "case": "4 beams / step 32 / gen 64",
+   "ok": true,
+   "baseline_same": true,
+   "lbs_same": true,
+   "D": true
+  },
+  {
+   "case": "4 beams / step 8 / gen 64",
+   "ok": true,
+   "baseline_same": true,
+   "lbs_same": true,
+   "D": true
+  },
+  {
+   "case": "8 beams / step 16 / gen 128",
+   "ok": true,
+   "baseline_same": true,
+   "lbs_same": true,
+   "D": true
+  },
+  {
+   "case": "10 beams / step 32 / gen 192",
+   "ok": true,
+   "baseline_same": true,
+   "lbs_same": true,
+   "D": true
+  }
+ ]
+}

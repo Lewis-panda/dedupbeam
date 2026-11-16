@@ -1,0 +1,37 @@
+===== FP16 =====
+[0 vs HF] 128 positions: max logit difference 0.0312, argmax agreement 100.0%
+== 4 beams / step 32 / gen 64 / M=170 MiB (overflows in the first step; LBS groups of 2)
+   A  baseline vs ingpu: tokens identical=True, max score difference=0.0e+00
+   B  LBS vs ingpu in the same groups: tokens identical=True, max score difference=0.0e+00
+   T  beam trees: baseline vs ingpu identical=True; LBS vs grouped ingpu identical=True; (info) unforced LBS vs baseline parents/tokens/kept identical=True
+   C  LBS forced onto ingpu's tokens: max per-token log-prob difference=0.0171, max final score difference=0.0585, steps with a different pruning choice=0, LBS would have sampled a different token 0 of 256 times
+      (info) unforced LBS vs ingpu: tokens identical=True, max score difference=0.058
+   D  host->GPU bytes: baseline 2,189,475,840 measured / 2,189,475,840 formula; LBS 377,487,360 / 377,487,360; equal=True
+== 4 beams / step 8 / gen 64 / M=200 MiB (overflows mid-way; 7 prunes)
+   A  baseline vs ingpu: tokens identical=True, max score difference=0.0e+00
+   B  LBS vs ingpu in the same groups: tokens identical=True, max score difference=0.0e+00
+   T  beam trees: baseline vs ingpu identical=True; LBS vs grouped ingpu identical=True; (info) unforced LBS vs baseline parents/tokens/kept identical=True
+   C  LBS forced onto ingpu's tokens: max per-token log-prob difference=0.0146, max final score difference=0.0505, steps with a different pruning choice=0, LBS would have sampled a different token 0 of 256 times
+      (info) unforced LBS vs ingpu: tokens identical=True, max score difference=0.051
+   D  host->GPU bytes: baseline 766,853,120 measured / 766,853,120 formula; LBS 901,775,360 / 901,775,360; equal=True
+== 8 beams / step 16 / gen 128 / M=400 MiB (overflows mid-way; LBS groups of 4)
+   A  baseline vs ingpu: tokens identical=True, max score difference=0.0e+00
+   B  LBS vs ingpu in the same groups: tokens identical=True, max score difference=0.0e+00
+   T  beam trees: baseline vs ingpu identical=True; LBS vs grouped ingpu identical=True; (info) unforced LBS vs baseline parents/tokens/kept identical=False
+   C  LBS forced onto ingpu's tokens: max per-token log-prob difference=0.0198, max final score difference=0.0839, steps with a different pruning choice=0, LBS would have sampled a different token 1 of 1024 times
+      (info) unforced LBS vs ingpu: tokens identical=False, max score difference=26.691
+   D  host->GPU bytes: baseline 12,775,587,840 measured / 12,775,587,840 formula; LBS 3,145,728,000 / 3,145,728,000; equal=True
+== 10 beams / step 32 / gen 192 / M=450 MiB (LBS 2 groups of 5, then 3 groups of 4/3/3)
+   A  baseline vs ingpu: tokens identical=True, max score difference=0.0e+00
+   B  LBS vs ingpu in the same groups: tokens identical=True, max score difference=0.0e+00
+   T  beam trees: baseline vs ingpu identical=True; LBS vs grouped ingpu identical=True; (info) unforced LBS vs baseline parents/tokens/kept identical=False
+   C  LBS forced onto ingpu's tokens: max per-token log-prob difference=0.1316, max final score difference=0.1393, steps with a different pruning choice=0, LBS would have sampled a different token 2 of 1920 times
+      (info) unforced LBS vs ingpu: tokens identical=False, max score difference=51.311
+   D  host->GPU bytes: baseline 52,510,412,800 measured / 52,510,412,800 formula; LBS 4,089,446,400 / 4,089,446,400; equal=True
+===== FP32: independent runs =====
+   E  4 beams / step 32 / gen 64 / M=170 MiB (M doubled): baseline tokens identical=True (score diff 0.0e+00); LBS tokens identical=True (score diff 1.5e-05); bytes equal formula=True; trees identical=True
+   E  4 beams / step 8 / gen 64 / M=200 MiB (M doubled): baseline tokens identical=True (score diff 0.0e+00); LBS tokens identical=True (score diff 9.3e-06); bytes equal formula=True; trees identical=True
+   E  8 beams / step 16 / gen 128 / M=400 MiB (M doubled): baseline tokens identical=True (score diff 0.0e+00); LBS tokens identical=True (score diff 3.3e-05); bytes equal formula=True; trees identical=True
+   E  10 beams / step 32 / gen 192 / M=450 MiB (M doubled): baseline tokens identical=True (score diff 0.0e+00); LBS tokens identical=True (score diff 4.7e-05); bytes equal formula=True; trees identical=True
+FP16 checks (0, A, B, C, D, T): PASS
+FP32 checks (E): PASS

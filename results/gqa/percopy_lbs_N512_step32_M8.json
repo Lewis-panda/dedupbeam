@@ -1,0 +1,15 @@
+{
+ "status": "skipped_host_memory",
+ "model": "Qwen/Qwen2.5-3B",
+ "mode": "lbs",
+ "n_beams": 512,
+ "step": 32,
+ "prompt_len": 128,
+ "n_gen": 1920,
+ "mem_gib": 8.0,
+ "seed": 0,
+ "started": "2026-11-14T12:11:12",
+ "reason": "not enough host memory: need 36.00 GiB pinned + 3 GiB headroom, only 26.71 GiB available",
+ "kv_full_bytes": 38654705664,
+ "store": "percopy"
+}

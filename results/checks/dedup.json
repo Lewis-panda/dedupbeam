@@ -1,0 +1,124 @@
+{
+ "fp16_ok": true,
+ "fp32_ok": true,
+ "fp16": [
+  {
+   "case": "4 beams / step 8 / gen 64 / M=200 rows",
+   "ok": true,
+   "A": true,
+   "B": true,
+   "C": true,
+   "D": true,
+   "C_dedup_vs_percopy": {
+    "samples": 256,
+    "own_differs": 0,
+    "max_lp_diff": 0.01495361328125,
+    "prune_differs": 0
+   },
+   "C_lbs_vs_ingpu": {
+    "samples": 256,
+    "own_differs": 0,
+    "max_lp_diff": 0.018778085708618164,
+    "prune_differs": 0
+   }
+  },
+  {
+   "case": "8 beams / step 16 / gen 128 / M=300 rows",
+   "ok": true,
+   "A": true,
+   "B": true,
+   "C": true,
+   "D": true,
+   "C_dedup_vs_percopy": {
+    "samples": 1024,
+    "own_differs": 2,
+    "max_lp_diff": 0.03866100311279297,
+    "prune_differs": 0
+   },
+   "C_lbs_vs_ingpu": {
+    "samples": 1024,
+    "own_differs": 2,
+    "max_lp_diff": 0.03045344352722168,
+    "prune_differs": 0
+   }
+  },
+  {
+   "case": "8 beams / step 32 / gen 256 / M=420 rows",
+   "ok": true,
+   "A": true,
+   "B": true,
+   "C": true,
+   "D": true,
+   "C_dedup_vs_percopy": {
+    "samples": 2048,
+    "own_differs": 4,
+    "max_lp_diff": 0.025769710540771484,
+    "prune_differs": 0
+   },
+   "C_lbs_vs_ingpu": {
+    "samples": 2048,
+    "own_differs": 5,
+    "max_lp_diff": 0.026330232620239258,
+    "prune_differs": 0
+   }
+  },
+  {
+   "case": "10 beams / step 32 / gen 192 / M=520 rows",
+   "ok": true,
+   "A": true,
+   "B": true,
+   "C": true,
+   "D": true,
+   "C_dedup_vs_percopy": {
+    "samples": 1920,
+    "own_differs": 3,
+    "max_lp_diff": 0.06728649139404297,
+    "prune_differs": 0
+   },
+   "C_lbs_vs_ingpu": {
+    "samples": 1920,
+    "own_differs": 3,
+    "max_lp_diff": 0.02103710174560547,
+    "prune_differs": 0
+   }
+  }
+ ],
+ "fp32": [
+  {
+   "case": "4 beams / step 8 / gen 64 / M=200 rows",
+   "ok": true,
+   "trees_same": [
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "case": "8 beams / step 16 / gen 128 / M=300 rows",
+   "ok": true,
+   "trees_same": [
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "case": "8 beams / step 32 / gen 256 / M=420 rows",
+   "ok": true,
+   "trees_same": [
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "case": "10 beams / step 32 / gen 192 / M=520 rows",
+   "ok": true,
+   "trees_same": [
+    true,
+    true,
+    true
+   ]
+  }
+ ]
+}

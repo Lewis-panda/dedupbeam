@@ -1,0 +1,36 @@
+===== FP16 =====
+== 4 beams / step 8 / gen 64 / M=200 rows
+   A  dedup baseline vs dedup on the GPU: trees bitwise identical=True (baseline moved 46,571,520 bytes; fewest GPU layers 29)
+   B  dedup LBS vs the same flow with the host copy on the GPU: bitwise identical=True (LBS moved 26,214,400 bytes; up to 2 groups)
+   C  dedup on the GPU forced onto per-beam tokens: max log-prob difference=0.0150, would have sampled differently 0 of 256 times, pruning differs in 0 steps
+      dedup LBS forced onto dedup-on-GPU tokens: max log-prob difference=0.0188, differs 0 times, pruning differs in 0 steps
+   D  host->GPU bytes: baseline 46,571,520 measured / 46,571,520 replayed; LBS 26,214,400 / 26,214,400; equal=True
+      (info) unforced: dedup on GPU vs per-beam tree identical=True; dedup LBS vs dedup on GPU identical=True
+== 8 beams / step 16 / gen 128 / M=300 rows
+   A  dedup baseline vs dedup on the GPU: trees bitwise identical=True (baseline moved 2,200,616,960 bytes; fewest GPU layers 19)
+   B  dedup LBS vs the same flow with the host copy on the GPU: bitwise identical=True (LBS moved 314,572,800 bytes; up to 4 groups)
+   C  dedup on the GPU forced onto per-beam tokens: max log-prob difference=0.0387, would have sampled differently 2 of 1024 times, pruning differs in 0 steps
+      dedup LBS forced onto dedup-on-GPU tokens: max log-prob difference=0.0305, differs 2 times, pruning differs in 0 steps
+   D  host->GPU bytes: baseline 2,200,616,960 measured / 2,200,616,960 replayed; LBS 314,572,800 / 314,572,800; equal=True
+      (info) unforced: dedup on GPU vs per-beam tree identical=False; dedup LBS vs dedup on GPU identical=False
+== 8 beams / step 32 / gen 256 / M=420 rows
+   A  dedup baseline vs dedup on the GPU: trees bitwise identical=True (baseline moved 14,283,571,200 bytes; fewest GPU layers 15)
+   B  dedup LBS vs the same flow with the host copy on the GPU: bitwise identical=True (LBS moved 618,659,840 bytes; up to 4 groups)
+   C  dedup on the GPU forced onto per-beam tokens: max log-prob difference=0.0258, would have sampled differently 4 of 2048 times, pruning differs in 0 steps
+      dedup LBS forced onto dedup-on-GPU tokens: max log-prob difference=0.0263, differs 5 times, pruning differs in 0 steps
+   D  host->GPU bytes: baseline 14,283,571,200 measured / 14,283,571,200 replayed; LBS 618,659,840 / 618,659,840; equal=True
+      (info) unforced: dedup on GPU vs per-beam tree identical=False; dedup LBS vs dedup on GPU identical=False
+== 10 beams / step 32 / gen 192 / M=520 rows
+   A  dedup baseline vs dedup on the GPU: trees bitwise identical=True (baseline moved 7,951,708,160 bytes; fewest GPU layers 16)
+   B  dedup LBS vs the same flow with the host copy on the GPU: bitwise identical=True (LBS moved 503,316,480 bytes; up to 3 groups)
+   C  dedup on the GPU forced onto per-beam tokens: max log-prob difference=0.0673, would have sampled differently 3 of 1920 times, pruning differs in 0 steps
+      dedup LBS forced onto dedup-on-GPU tokens: max log-prob difference=0.0210, differs 3 times, pruning differs in 0 steps
+   D  host->GPU bytes: baseline 7,951,708,160 measured / 7,951,708,160 replayed; LBS 503,316,480 / 503,316,480; equal=True
+      (info) unforced: dedup on GPU vs per-beam tree identical=False; dedup LBS vs dedup on GPU identical=False
+===== FP32: independent runs =====
+   E  4 beams / step 8 / gen 64 / M=200 rows: same tree as per-beam on the GPU: dedup on GPU=True, dedup baseline=True, dedup LBS=True; max score difference 1.7e-05
+   E  8 beams / step 16 / gen 128 / M=300 rows: same tree as per-beam on the GPU: dedup on GPU=True, dedup baseline=True, dedup LBS=True; max score difference 6.3e-05
+   E  8 beams / step 32 / gen 256 / M=420 rows: same tree as per-beam on the GPU: dedup on GPU=True, dedup baseline=True, dedup LBS=True; max score difference 5.7e-05
+   E  10 beams / step 32 / gen 192 / M=520 rows: same tree as per-beam on the GPU: dedup on GPU=True, dedup baseline=True, dedup LBS=True; max score difference 6.6e-05
+FP16 checks (A, B, C, D): PASS
+FP32 checks (E): PASS

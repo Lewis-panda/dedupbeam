@@ -1,0 +1,40 @@
+{
+ "beams": 32,
+ "heads": 32,
+ "head_dim": 80,
+ "dtype": "float16",
+ "gpu": "NVIDIA GeForce RTX 5060 Ti",
+ "rows": [
+  {
+   "pool_rows": 2048,
+   "pool_kv_gib": 0.01953125,
+   "pool_mask_ms": 0.1682101331728821,
+   "buffers_8_ms": 0.20291843296339115,
+   "buffers_63_ms": 1.4070757999434136
+  },
+  {
+   "pool_rows": 5200,
+   "pool_kv_gib": 0.049591064453125,
+   "pool_mask_ms": 0.35445649991743267,
+   "buffers_8_ms": 0.4282573000333893,
+   "buffers_63_ms": 1.4731889003693746
+  },
+  {
+   "pool_rows": 9000,
+   "pool_kv_gib": 0.0858306884765625,
+   "pool_mask_ms": 0.704487033362966,
+   "buffers_8_ms": 0.8820996003729913,
+   "buffers_63_ms": 1.4195794666496417
+  },
+  {
+   "pool_rows": 14500,
+   "pool_kv_gib": 0.13828277587890625,
+   "pool_mask_ms": 1.2085353999282233,
+   "buffers_8_ms": 1.526322733358635,
+   "buffers_63_ms": 1.8090307664048548
+  }
+ ],
+ "per_beam_ms": 2.092004066798836,
+ "per_beam_tokens": 2048,
+ "per_beam_kv_gib": 0.625
+}

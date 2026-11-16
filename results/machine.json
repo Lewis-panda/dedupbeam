@@ -1,0 +1,108 @@
+{
+ "pcie_idle": {
+  "current_link_speed": "32.0 GT/s PCIe",
+  "current_link_width": "8",
+  "max_link_speed": "32.0 GT/s PCIe",
+  "max_link_width": "16",
+  "nvidia_smi": "Max:5 / Current:5 / DeviceCurrent:5 / DeviceMax:5 / HostMax:5 / Max:16x / Current:8x"
+ },
+ "lspci": "not readable (lspci shows LnkCap/LnkSta only with root)",
+ "pin_test": {
+  "mem_total_gib": 31.06360626220703,
+  "mem_available_before_gib": 28.37344741821289,
+  "block_gib": 0.625,
+  "blocks_pinned": 32,
+  "pinned_gib": 20.0,
+  "seconds": 5.908995856996626,
+  "mem_available_while_pinned_gib": 8.51180648803711,
+  "stopped": null,
+  "torch_pin_memory_one_block_costs_gib": 1.0190620422363281
+ },
+ "transfer": {
+  "h2d_pinned_1 GiB": {
+   "bytes": 1073741824,
+   "median_s": 0.05382841997197829,
+   "gib_per_s": 18.577546963492047,
+   "gb_per_s": 19.947489162025615,
+   "best_gib_per_s": 18.58997079994352,
+   "worst_gib_per_s": 18.485655477271592,
+   "reps": 30
+  },
+  "d2h_pinned_1 GiB": {
+   "bytes": 1073741824,
+   "median_s": 0.06498336952063255,
+   "gib_per_s": 15.388552600100168,
+   "gb_per_s": 16.523332537551497,
+   "reps": 30
+  },
+  "h2d_pageable_1 GiB": {
+   "bytes": 1073741824,
+   "median_s": 0.06927806249586865,
+   "gib_per_s": 14.434583820233632,
+   "gb_per_s": 15.499016359818548,
+   "reps": 10
+  },
+  "h2d_pinned_320 MiB": {
+   "bytes": 335544320,
+   "median_s": 0.016669250006088987,
+   "gib_per_s": 18.74709419355095,
+   "gb_per_s": 20.129539114083208,
+   "best_gib_per_s": 18.7634124514684,
+   "worst_gib_per_s": 18.69829136873089,
+   "reps": 30
+  },
+  "h2d_pinned_84 MiB": {
+   "bytes": 88080384,
+   "median_s": 0.004381512524560094,
+   "gib_per_s": 18.722130666107358,
+   "gb_per_s": 20.10273473059245,
+   "best_gib_per_s": 18.767811404772974,
+   "worst_gib_per_s": 18.62844475291973,
+   "reps": 50
+  },
+  "h2d_pinned_10 MiB": {
+   "bytes": 10485760,
+   "median_s": 0.0005294465227052569,
+   "gib_per_s": 18.444969569545226,
+   "gb_per_s": 19.805135269227986,
+   "best_gib_per_s": 18.573243028924047,
+   "worst_gib_per_s": 18.20660964020895,
+   "reps": 100
+  }
+ },
+ "pcie_during_transfer": {
+  "sysfs_seen": [
+   [
+    "32.0 GT/s PCIe",
+    "8"
+   ]
+  ],
+  "nvidia_smi": "Max:5 / Current:5 / DeviceCurrent:5 / DeviceMax:5 / HostMax:5 / Max:16x / Current:8x"
+ },
+ "gpu_memory": {
+  "total_mib": 15827.3125,
+  "free_before_model_mib": 15548.0,
+  "free_after_model_mib": 10294.0,
+  "model_allocated_mib": 5058.05078125,
+  "n_params": 2651596800
+ },
+ "matmul": {
+  "median_s": 0.03502018496510573,
+  "best_s": 0.034909658948890865,
+  "worst_s": 0.03688959503779188,
+  "flops": 1717986918400,
+  "tflops": 49.05704867383796
+ },
+ "one_layer_32beams_s2047": {
+  "median_s": 0.0025957180187106133,
+  "times_32_layers_s": 0.08306297659873962,
+  "kv_gib_read": 0.625
+ },
+ "versions": {
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "gpu": "NVIDIA GeForce RTX 5060 Ti",
+  "driver": "595.99.02",
+  "date": "2026-11-12T16:32:56"
+ }
+}

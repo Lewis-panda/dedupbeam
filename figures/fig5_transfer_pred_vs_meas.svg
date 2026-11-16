@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="614" viewBox="0 0 980 614">
+<rect width="980" height="614" fill="#fcfcfb"/>
+<text x="24.0" y="36.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="#0b0b0b" text-anchor="start">Measured host→GPU transfer equals the prediction in every run</text>
+<text x="24.0" y="60.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" fill="#52514e" text-anchor="start">OPT-2.7B FP16 · 32 beams · prompt 128 + 1,920 generated tokens · RTX 5060 Ti 16 GB · M = 2.2 GiB</text>
+<circle cx="30.0" cy="84.0" r="4.5" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
+<text x="42.0" y="88.5" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="start">Predicted</text>
+<circle cx="135.2" cy="84.0" r="5" fill="#eb6834"/>
+<text x="147.2" y="88.5" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="start">Measured, per-beam KV</text>
+<circle cx="327.5" cy="84.0" r="5" fill="#2a78d6"/>
+<text x="339.5" y="88.5" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="start">Measured, deduplicated</text>
+<text x="24.0" y="136.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#0b0b0b" text-anchor="start">Step 32</text>
+<text x="288.0" y="136.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Baseline, per-beam KV</text>
+<circle cx="730.3" cy="132.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
+<circle cx="730.3" cy="132.0" r="4.5" fill="#eb6834"/>
+<text x="822.0" y="136.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">16,544.4 GiB</text>
+<text x="288.0" y="164.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, per-beam KV</text>
+<circle cx="585.1" cy="160.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
+<circle cx="585.1" cy="160.0" r="4.5" fill="#eb6834"/>
+<text x="822.0" y="164.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">623.4 GiB</text>
+<text x="288.0" y="192.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Baseline, dedup KV</text>
+<text x="304.0" y="192.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#52514e" text-anchor="start" font-style="italic">0 — all KV fits in M (predicted 0)</text>
+<text x="288.0" y="220.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, dedup KV</text>
+<text x="304.0" y="220.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#52514e" text-anchor="start" font-style="italic">0 — all KV fits in M (predicted 0)</text>
+<text x="24.0" y="264.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#0b0b0b" text-anchor="start">Step 64</text>
+<text x="288.0" y="264.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Baseline, per-beam KV</text>
+<circle cx="730.3" cy="260.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
+<circle cx="730.3" cy="260.0" r="4.5" fill="#eb6834"/>
+<text x="822.0" y="264.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">16,544.4 GiB</text>
+<text x="288.0" y="292.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, per-beam KV</text>
+<circle cx="553.9" cy="288.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
+<circle cx="553.9" cy="288.0" r="4.5" fill="#eb6834"/>
+<text x="822.0" y="292.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">308.1 GiB</text>
+<text x="288.0" y="320.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Baseline, dedup KV</text>
+<text x="304.0" y="320.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#52514e" text-anchor="start" font-style="italic">0 — all KV fits in M (predicted 0)</text>
+<text x="288.0" y="348.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, dedup KV</text>
+<text x="304.0" y="348.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#52514e" text-anchor="start" font-style="italic">0 — all KV fits in M (predicted 0)</text>
+<text x="24.0" y="392.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#0b0b0b" text-anchor="start">Step 128</text>
+<text x="288.0" y="392.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Baseline, per-beam KV</text>
+<circle cx="730.3" cy="388.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
+<circle cx="730.3" cy="388.0" r="4.5" fill="#eb6834"/>
+<text x="822.0" y="392.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">16,544.4 GiB</text>
+<text x="288.0" y="420.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, per-beam KV</text>
+<circle cx="522.0" cy="416.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
+<circle cx="522.0" cy="416.0" r="4.5" fill="#eb6834"/>
+<text x="822.0" y="420.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">150.0 GiB</text>
+<text x="288.0" y="448.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Baseline, dedup KV</text>
+<circle cx="581.8" cy="444.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
+<circle cx="581.8" cy="444.0" r="4.5" fill="#2a78d6"/>
+<text x="822.0" y="448.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">579.0 GiB</text>
+<text x="288.0" y="476.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, dedup KV</text>
+<circle cx="433.4" cy="472.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
+<circle cx="433.4" cy="472.0" r="4.5" fill="#2a78d6"/>
+<text x="822.0" y="476.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">20.3 GiB</text>
+<line x1="300.0" y1="122.0" x2="300.0" y2="494.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="300.0" y="510.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#898781" text-anchor="middle">1</text>
+<line x1="402.0" y1="122.0" x2="402.0" y2="494.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="402.0" y="510.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#898781" text-anchor="middle">10</text>
+<line x1="504.0" y1="122.0" x2="504.0" y2="494.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="504.0" y="510.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#898781" text-anchor="middle">100</text>
+<line x1="606.0" y1="122.0" x2="606.0" y2="494.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="606.0" y="510.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#898781" text-anchor="middle">1,000</text>
+<line x1="708.0" y1="122.0" x2="708.0" y2="494.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="708.0" y="510.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#898781" text-anchor="middle">10,000</text>
+<line x1="810.0" y1="122.0" x2="810.0" y2="494.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="810.0" y="510.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#898781" text-anchor="middle">100,000</text>
+<text x="555.0" y="530.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#898781" text-anchor="middle">Host→GPU transfer over the whole search (GiB, log scale)</text>
+<text x="24.0" y="584.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="11.5" font-weight="normal" fill="#898781" text-anchor="start">Predicted, per-beam KV: the LBS paper&#x27;s Eq. 1–5. Predicted, deduplicated: GPU-free replay of the recorded beam tree (dedupbeam/segbook.py).</text>
+<text x="24.0" y="600.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="11.5" font-weight="normal" fill="#898781" text-anchor="start">Measured: bytes summed at every host→GPU copy in the engine.</text>
+</svg>

@@ -1,0 +1,9 @@
+# Versions used for the results in this repository (Python 3.12.3, Linux, NVIDIA driver 595.99.02).
+# Install PyTorch first with CUDA 12.8 wheels (RTX 50-series GPUs need cu128 or newer):
+#   pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+torch==2.11.0
+transformers==5.22.2
+huggingface-hub==2.4.0
+safetensors==0.8.0
+tokenizers==0.23.3
+numpy==2.5.4
