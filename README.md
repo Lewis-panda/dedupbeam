@@ -1,25 +1,14 @@
 # DedupBeam
 
-Shared-prefix KV deduplication for beam search on a consumer GPU; reproduces LBS (MLSys 2026) and shows dedup removes most of the transfer LBS optimizes.
+DedupBeam stores the KV cache of shared beam prefixes once, on the host and on the GPU, instead of once per beam. On OPT-2.7B with 32 beams it cuts peak KV from 20 GiB to 1.6–3.4 GiB and runs 2.9–6.2× faster than LBS-style beam scheduling (MLSys 2026) and 11.8–22.1× faster than layer-wise KV offloading at the same 2.2 GiB GPU budget, using only standard PyTorch ops (no custom kernel).
 
 ![One GPU copy per shared segment instead of one per beam](figures/fig1_mechanism.png)
 
-## Background
-
-[Locality-Aware Beam Scheduling for Efficient Test-Time Compute with a Consumer-grade GPU](https://proceedings.mlsys.org/paper_files/paper/2026/file/c74b624843218d9b6713fcf299d6d5e4-Paper-Conference.pdf) (LBS, MLSys 2026) studies step-wise beam search when the KV cache of all beams does not fit in GPU memory. The usual layer-wise offloading decodes all beams token by token and reloads every offloaded layer for every token. LBS reorders the work: a group of beams loads its KV once, decodes a whole step, then the next group runs. The paper also groups beams with shared prefixes so that each shared segment crosses PCIe once, and prefetches the next group.
-
-Beams in step-wise search share long prefixes. Footnote 2 of the paper notes that "each beam still maintains a separate copy of the shared KV cache once loaded into GPU memory due to CUDA kernel layout constraints". This repository asks what is left for LBS to optimize when the shared KV is stored once, on the host and on the GPU, for both the baseline and LBS.
-
-## What is here
-
-- **Per-beam engine** (`dedupbeam/perbeam.py`): step-wise beam search with one KV copy per beam, in three modes: all KV on the GPU, the layer-wise offloading baseline, and LBS (reordering only; no prefix grouping, no prefetching). It reproduces the paper's transfer-volume model (Eq. 1–5) to the byte.
-- **Deduplicated engine** (`dedupbeam/dedup.py`, `dedupbeam/segbook.py`): the KV that one beam wrote in one step is a segment; a segment is stored once and shared by every beam that descends from it. Each layer keeps one K pool and one V pool (one row per distinct token). Attention computes scores against the whole pool in one `bmm`, adds `-inf` for rows the beam does not own, applies one softmax, and does one more `bmm` for the weighted sum. This demonstrates dedup is implementable with standard PyTorch ops (`bmm`, `softmax`, `masked_fill`); there is no custom kernel. Baseline and LBS both have a dedup version.
-- **GQA model class** (`dedupbeam/gqa.py`): Qwen2.5-3B with the same interface, to see whether a model with grouped-query attention needs offloading at all at this search size.
-- Scripts to run everything, check correctness, and regenerate every table and figure from the JSON results (`scripts/`).
-
-## Results
+## Key results
 
 Setup: OPT-2.7B in FP16, 32 beams, beam width 2 (half of the beams survive each step), prompt of 128 tokens, 1,920 generated tokens, cumulative log-probability scoring, Gumbel-max sampling with seed 0, one RTX 5060 Ti 16 GB (PCIe 5.0 x8, 18.6 GiB/s host→GPU). M is the GPU memory reserved for KV. M = 2.2 GiB keeps roughly the ratio between total KV and M of the paper's Fig. 7 (7 GB reserved for KV; 64 beams of OPT-6.7B at 2,048 tokens hold 64 GiB of per-beam KV by our count, about 9×; here 20 GiB vs 2.2 GiB).
+
+Two schedules are compared, each with one KV copy per beam and with DedupBeam's deduplicated KV: layer-wise KV offloading (the baseline) and LBS-style beam scheduling (reordering only). The ratios in the opening paragraph compare the "LBS, dedup KV" column with "LBS, per-beam KV" (2.9–6.2×) and with "Baseline, per-beam KV" (11.8–22.1×).
 
 End-to-end time at M = 2.2 GiB (seconds) and the ratios between them:
 
@@ -31,8 +20,6 @@ End-to-end time at M = 2.2 GiB (seconds) and the ratios between them:
 
 - With per-beam KV, LBS is 3.6–4.1× faster than the baseline. (The paper reports 3.39–9.72× end to end on an RTX 4090 for its full method, which also includes prefix-aware grouping and prefetching.)
 - With dedup on both sides, the distinct KV peaks at 1.58 / 2.17 / 3.40 GiB instead of 20 GiB. At step 32 and 64 it fits in M, nothing is transferred, and LBS and the baseline take the same time. At step 128 the baseline transfers 579 GiB and LBS 20 GiB, and LBS is 1.17× faster.
-- With a tighter M = 1 GiB (both dedup), LBS is 0.87× / 1.02× / 1.29× of the baseline for step 32 / 64 / 128. LBS splits the beams into groups, and every group reads the model weights once per token, which costs more compute than the transfer it saves when the transfer is already small.
-- Measured host→GPU bytes equal the prediction in every run: the paper's Eq. 1–5 for per-beam KV, and a GPU-free replay of the recorded beam tree for dedup.
 
 ![KV peak](figures/fig2_kv_peak.png)
 
@@ -40,7 +27,41 @@ End-to-end time at M = 2.2 GiB (seconds) and the ratios between them:
 
 ![Speedups](figures/fig4_speedups.png)
 
+## Motivation
+
+Step-wise beam search keeps many beams that share long prefixes. When the KV cache of all beams does not fit in GPU memory, layer-wise offloading decodes all beams token by token and reloads every offloaded layer for every token. [Locality-Aware Beam Scheduling for Efficient Test-Time Compute with a Consumer-grade GPU](https://proceedings.mlsys.org/paper_files/paper/2026/file/c74b624843218d9b6713fcf299d6d5e4-Paper-Conference.pdf) (LBS, MLSys 2026) reorders the work: a group of beams loads its KV once and decodes a whole step before the next group runs. The paper also groups beams with shared prefixes so that each shared segment crosses PCIe once, and prefetches the next group.
+
+In both designs the GPU still holds one copy of the shared KV per beam. Footnote 2 of the LBS paper attributes this to kernel layout: "each beam still maintains a separate copy of the shared KV cache once loaded into GPU memory due to CUDA kernel layout constraints". This repository shows that standard PyTorch ops are enough to store the shared KV once, on the host and on the GPU, and measures what that leaves for offloading and scheduling to optimize.
+
+## How it works
+
+- **Segments and pools** (`dedupbeam/dedup.py`, `dedupbeam/segbook.py`): the KV that one beam wrote in one step is a segment; a segment is stored once and shared by every beam that descends from it. Each layer keeps one K pool and one V pool (one row per distinct token).
+- **Attention over the shared pool:** scores are computed against the whole pool in one `bmm`, rows the beam does not own get `-inf`, one softmax is applied, and one more `bmm` produces the weighted sum. This demonstrates dedup is implementable with standard PyTorch ops (`bmm`, `softmax`, `masked_fill`); there is no custom kernel.
+- `SegBook` (`dedupbeam/segbook.py`) records, for every beam, the chain of segments it descends from, and where each segment lives in the GPU pool and in the host pool. Pruning never copies KV: a dropped slot simply points at the survivor's chain, and segments nobody uses are freed and the pools compacted.
+- Both schedules have a dedup version:
+  - **Baseline (dedup):** all beams in one batch, token by token. The number of GPU-resident layers is Eq. 1 with the layer size taken over distinct tokens; the other layers are reloaded every token, distinct content only. When pruning frees room, layers move back to the GPU (counted as transfer).
+  - **LBS (dedup):** beams are ordered by their segment chains so that beams sharing the most are adjacent, and packed into groups whose distinct old segments plus this step's new segments fit in M. Segments that the next group also needs stay on the GPU; only missing segments are loaded. (Without that retention, step 128 at M = 2.2 GiB would move 26.2 GiB instead of 20.3 GiB.)
+
+## Baselines
+
+The LBS-style baseline implements only LBS's reordering; the paper's prefix-aware grouping and prefetching are not implemented. Both baselines are reimplemented here so that they run with the same model, sampling, scoring and GPU memory budget as DedupBeam.
+
+- **Per-beam engine** (`dedupbeam/perbeam.py`): step-wise beam search with one KV copy per beam, in three modes: all KV on the GPU, the layer-wise offloading baseline, and LBS (reordering only; no prefix grouping, no prefetching). It reproduces the paper's transfer-volume model (Eq. 1–5) to the byte.
+- **Check against the paper's model** (per-beam KV, M = 8 GiB, step 32): 8 / 16 / 24 / 32 beams give LBS speedups of 1.00× / 1.12× / 2.22× / 3.05×, and the transfer volumes (0 / 468.2 / 3,510.9 / 7,635.7 GiB for the baseline, 0 / 115.8 / 341.0 / 536.2 GiB for LBS) match Eq. 1–5 exactly. The paper reports up to 6.85× on an RTX 3080 Ti with OPT-2.7B (its §5.5); its method also includes prefix-aware grouping and prefetching, and only reordering is implemented here.
+
+## More results
+
+### Tighter budget (M = 1 GiB)
+
+With a tighter M = 1 GiB (both dedup), LBS is 0.87× / 1.02× / 1.29× of the baseline for step 32 / 64 / 128. LBS splits the beams into groups, and every group reads the model weights once per token, which costs more compute than the transfer it saves when the transfer is already small.
+
+### Predicted vs measured transfer
+
+Measured host→GPU bytes equal the prediction in every run: the paper's Eq. 1–5 for per-beam KV, and a GPU-free replay of the recorded beam tree for dedup.
+
 ![Transfer, predicted vs measured](figures/fig5_transfer_pred_vs_meas.png)
+
+### Attention microbenchmark
 
 The single pool with a mask is faster than splitting the shared KV into one buffer per run of segments shared by the same beams (that layout needs up to 31 buffers per step here):
 
@@ -48,19 +69,13 @@ The single pool with a mask is faster than splitting the shared KV into one buff
 
 The masked pool computes scores for rows a beam cannot see: 3.1× / 4.2× / 6.7× more score rows than needed at step 32 / 64 / 128. Decode attention is limited by memory reads, so it is still cheaper than reading per-beam copies: with all beams in one batch and nothing transferred, compute takes 44.5 / 49.2 / 64.0 s with dedup KV against 101.3–101.5 s with per-beam KV.
 
-**LBS reproduction** (per-beam KV, M = 8 GiB, step 32): 8 / 16 / 24 / 32 beams give LBS speedups of 1.00× / 1.12× / 2.22× / 3.05×, and the transfer volumes (0 / 468.2 / 3,510.9 / 7,635.7 GiB for the baseline, 0 / 115.8 / 341.0 / 536.2 GiB for LBS) match Eq. 1–5 exactly. The paper reports up to 6.85× on an RTX 3080 Ti with OPT-2.7B (its §5.5); its method also includes prefix-aware grouping and prefetching, and only reordering is implemented here.
+### GQA model
 
-**GQA model.** Qwen2.5-3B stores 36,864 bytes of KV per token (2 KV heads × 128 dims × 36 layers), 11% of OPT-2.7B's 327,680. With M = 8 GiB it fits 112 beams of 2,048 tokens without offloading; 32 beams take 44.9 s. At 128 beams LBS is 0.97× of the baseline and at 256 beams 2.28×. 512 beams were not run (they need 28–36 GiB of pinned host memory).
+A GQA model class (`dedupbeam/gqa.py`) runs Qwen2.5-3B with the same interface, to see whether a model with grouped-query attention needs offloading at all at this search size. Qwen2.5-3B stores 36,864 bytes of KV per token (2 KV heads × 128 dims × 36 layers), 11% of OPT-2.7B's 327,680. With M = 8 GiB it fits 112 beams of 2,048 tokens without offloading; 32 beams take 44.9 s. At 128 beams LBS is 0.97× of the baseline and at 256 beams 2.28×. 512 beams were not run (they need 28–36 GiB of pinned host memory).
 
 ![GQA](figures/fig7_gqa.png)
 
 All numbers, including the M = 1 GiB runs and the per-run breakdowns, are in [`results/tables.md`](results/tables.md). Each run's JSON summary is in `results/`.
-
-## How the deduplicated store works
-
-- `SegBook` (`dedupbeam/segbook.py`) records, for every beam, the chain of segments it descends from, and where each segment lives in the GPU pool and in the host pool. Pruning never copies KV: a dropped slot simply points at the survivor's chain, and segments nobody uses are freed and the pools compacted.
-- **Baseline (dedup):** all beams in one batch, token by token. The number of GPU-resident layers is Eq. 1 with the layer size taken over distinct tokens; the other layers are reloaded every token, distinct content only. When pruning frees room, layers move back to the GPU (counted as transfer).
-- **LBS (dedup):** beams are ordered by their segment chains so that beams sharing the most are adjacent, and packed into groups whose distinct old segments plus this step's new segments fit in M. Segments that the next group also needs stay on the GPU; only missing segments are loaded. (Without that retention, step 128 at M = 2.2 GiB would move 26.2 GiB instead of 20.3 GiB.)
 
 ## Correctness checks
 
@@ -104,6 +119,8 @@ A single run: `python scripts/run.py --exp NAME --store {percopy,dedup} --mode {
 Beam-tree files (`.npz`) hold, for every step and slot, the parent slot, the generated tokens, per-token log-probabilities, the cumulative score and whether the candidate survived, plus a JSON header with the settings. Only the three reference trees of the dedup experiment are included (`results/dedup/trees/`); they are what the dedup transfer predictions replay.
 
 ## Repository layout
+
+Scripts run everything, check correctness, and regenerate every table and figure from the JSON results.
 
 ```
 dedupbeam/   engines and models: common, opt, gqa, perbeam, segbook, dedup, predict
