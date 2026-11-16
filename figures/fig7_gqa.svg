@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1100" height="560" viewBox="0 0 1100 560">
 <rect width="1100" height="560" fill="#fcfcfb"/>
-<text x="24.0" y="36.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="#0b0b0b" text-anchor="start">GQA: Qwen2.5-3B fits 112 beams in 8 GiB without offloading; LBS pays off only at 256 (2.28×)</text>
+<text x="24.0" y="36.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="19" font-weight="bold" fill="#0b0b0b" text-anchor="start">GQA: Qwen2.5-3B fits 112 beams in 8 GiB; group-wise pays off only at 256 (2.28×)</text>
 <text x="24.0" y="60.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" fill="#52514e" text-anchor="start">Qwen2.5-3B FP16 · one KV copy per beam · step 32 · prompt 128 + 1,920 generated · M = 8 GiB · RTX 5060 Ti 16 GB</text>
 <rect x="24.0" y="78.0" width="12.0" height="12.0" rx="3" fill="#2a78d6"/>
 <text x="42.0" y="88.5" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="start">Fits in M: all KV on the GPU</text>
 <rect x="267.0" y="78.0" width="12.0" height="12.0" rx="3" fill="#eb6834"/>
 <text x="285.0" y="88.5" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="start">Exceeds M: baseline (layer-wise offloading)</text>
 <rect x="618.8" y="78.0" width="12.0" height="12.0" rx="3" fill="#1baf7a"/>
-<text x="636.8" y="88.5" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="start">Exceeds M: LBS</text>
+<text x="636.8" y="88.5" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="start">Exceeds M: group-wise schedule</text>
 <text x="24.0" y="118.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#0b0b0b" text-anchor="start">KV for all beams at 2,048 tokens (GiB): blue fits in M, gray exceeds it</text>
 <line x1="80.0" y1="460.0" x2="480.0" y2="460.0" stroke="#e1e0d9" stroke-width="1"/>
 <text x="70.0" y="464.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#898781" text-anchor="end">0</text>
@@ -63,13 +63,15 @@
 <text x="854.3" y="403.8" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#0b0b0b" text-anchor="middle" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">90</text>
 <path d="M870.3,460.0 V413.1 Q870.3,409.1 874.3,409.1 H890.3 Q894.3,409.1 894.3,413.1 V460.0 Z" fill="#1baf7a"/>
 <text x="882.3" y="402.1" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#0b0b0b" text-anchor="middle" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">93</text>
-<text x="868.3" y="383.1" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="bold" fill="#0b0b0b" text-anchor="middle">LBS 0.97×</text>
+<text x="868.3" y="365.1" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="bold" fill="#0b0b0b" text-anchor="middle">Group-wise</text>
+<text x="868.3" y="383.1" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="bold" fill="#0b0b0b" text-anchor="middle">0.97×</text>
 <text x="868.3" y="480.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="middle">128</text>
 <path d="M919.0,460.0 V200.4 Q919.0,196.4 923.0,196.4 H939.0 Q943.0,196.4 943.0,200.4 V460.0 Z" fill="#eb6834"/>
 <text x="931.0" y="189.4" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#0b0b0b" text-anchor="middle" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">479</text>
 <path d="M947.0,460.0 V348.4 Q947.0,344.4 951.0,344.4 H967.0 Q971.0,344.4 971.0,348.4 V460.0 Z" fill="#1baf7a"/>
 <text x="959.0" y="337.4" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#0b0b0b" text-anchor="middle" stroke="#fcfcfb" stroke-width="4" stroke-linejoin="round" paint-order="stroke">210</text>
-<text x="945.0" y="170.4" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="bold" fill="#0b0b0b" text-anchor="middle">LBS 2.28×</text>
+<text x="945.0" y="152.4" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="bold" fill="#0b0b0b" text-anchor="middle">Group-wise</text>
+<text x="945.0" y="170.4" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="bold" fill="#0b0b0b" text-anchor="middle">2.28×</text>
 <text x="945.0" y="480.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="middle">256</text>
 <text x="1021.7" y="402.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#52514e" text-anchor="middle">512:</text>
 <text x="1021.7" y="418.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#52514e" text-anchor="middle">not run</text>
@@ -78,5 +80,5 @@
 <line x1="600.0" y1="460.0" x2="1060.0" y2="460.0" stroke="#c3c2b7" stroke-width="1"/>
 <text x="830.0" y="500.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#898781" text-anchor="middle">Total beams</text>
 <text x="24.0" y="530.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="11.5" font-weight="normal" fill="#898781" text-anchor="start">Qwen2.5-3B KV is 36,864 bytes per token (2 KV heads × 128 × 36 layers); OPT-2.7B&#x27;s is 327,680. For comparison, OPT-2.7B with 32 beams</text>
-<text x="24.0" y="546.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="11.5" font-weight="normal" fill="#898781" text-anchor="start">needs 20 GiB of KV: per-beam baseline 517 s, per-beam LBS 170 s, deduplicated 45 s (M = 8 GiB). Different models: compare scale, not accuracy.</text>
+<text x="24.0" y="546.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="11.5" font-weight="normal" fill="#898781" text-anchor="start">needs 20 GiB of KV: per-beam baseline 517 s, per-beam group-wise 170 s, deduplicated 45 s (M = 8 GiB). Different models: compare scale, not accuracy.</text>
 </svg>

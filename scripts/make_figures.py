@@ -463,12 +463,12 @@ def fig_speedups():
     W, H = 920, 540
     s = SVG(W, H)
     s.header(
-        f"With dedup on both sides LBS gains {min(b):.2f}–{max(b):.2f}×, not {min(a):.1f}–{max(a):.1f}×",
+        f"With dedup KV, group-wise gains {min(b):.2f}–{max(b):.2f}×, not {min(a):.1f}–{max(a):.1f}×",
         f"{SUB_DEDUP} · M = {D.M_MAIN} GiB · ratios of end-to-end time",
         legend=[
-            (PERBEAM, "LBS vs baseline, per-beam KV", "box"),
-            (DEDUP, "LBS vs baseline, both deduplicated", "box"),
-            (C["aqua"], "Dedup LBS vs per-beam LBS", "box"),
+            (PERBEAM, "Group-wise vs baseline, per-beam KV", "box"),
+            (DEDUP, "Group-wise vs baseline, both dedup", "box"),
+            (C["aqua"], "Dedup vs per-beam, group-wise", "box"),
         ],
     )
     x0, x1, yb, yt = 80, W - 40, H - 90, 120
@@ -491,7 +491,7 @@ def fig_speedups():
     s.text(x1, sy(1) - 6, "1× = no gain", 11.5, C["ink2"], anchor="end")
     s.footnote(
         [
-            "A ratio is the slower run's total time divided by the faster one's; e.g. 3.58× means LBS took 1/3.58 of the baseline's time."
+            "A ratio is the slower run's total time divided by the faster one's; e.g. 3.58× means the group-wise schedule took 1/3.58 of the baseline's time."
         ]
     )
     s.save("fig4_speedups")
@@ -653,10 +653,10 @@ def fig_gqa():
     b256, l256 = g("baseline", 256), g("lbs", 256)
     W, H = 1100, 560
     s = SVG(W, H)
-    title = f"GQA: Qwen2.5-3B fits {fit_max} beams in 8 GiB without offloading"
+    title = f"GQA: Qwen2.5-3B fits {fit_max} beams in 8 GiB"
     if D.ok(b256) and D.ok(l256):
         title += (
-            f"; LBS pays off only at 256 ({b256['total_s'] / l256['total_s']:.2f}×)"
+            f"; group-wise pays off only at 256 ({b256['total_s'] / l256['total_s']:.2f}×)"
         )
     s.header(
         title,
@@ -664,7 +664,7 @@ def fig_gqa():
         legend=[
             (DEDUP, "Fits in M: all KV on the GPU", "box"),
             (PERBEAM, "Exceeds M: baseline (layer-wise offloading)", "box"),
-            (C["aqua"], "Exceeds M: LBS", "box"),
+            (C["aqua"], "Exceeds M: group-wise schedule", "box"),
         ],
     )
     # left: KV size by beam count
@@ -721,10 +721,11 @@ def fig_gqa():
         if k == 2 and D.ok(g("baseline", n)) and D.ok(g("lbs", n)):
             ratio = g("baseline", n)["total_s"] / g("lbs", n)["total_s"]
             top = sy2(max(g("baseline", n)["total_s"], g("lbs", n)["total_s"]))
+            s.text(cx, top - 44, "Group-wise", 12.5, C["ink"], weight="bold", anchor="middle")
             s.text(
                 cx,
                 top - 26,
-                f"LBS {ratio:.2f}×",
+                f"{ratio:.2f}×",
                 12.5,
                 C["ink"],
                 weight="bold",
@@ -741,7 +742,7 @@ def fig_gqa():
     s.footnote(
         [
             f"Qwen2.5-3B KV is {btok:,} bytes per token (2 KV heads × 128 × 36 layers); OPT-2.7B's is 327,680. For comparison, OPT-2.7B with 32 beams",
-            "needs 20 GiB of KV: per-beam baseline 517 s, per-beam LBS 170 s, deduplicated 45 s (M = 8 GiB). Different models: compare scale, not accuracy.",
+            "needs 20 GiB of KV: per-beam baseline 517 s, per-beam group-wise 170 s, deduplicated 45 s (M = 8 GiB). Different models: compare scale, not accuracy.",
         ]
     )
     s.save("fig7_gqa")

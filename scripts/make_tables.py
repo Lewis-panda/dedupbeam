@@ -63,11 +63,11 @@ o += [
 bw = D.h2d_gib_per_s()
 R1 = D.repro_runs()
 o += [
-    "## LBS reproduction (one KV copy per beam, OPT-2.7B, M = 8 GiB, step 32)",
+    "## Group-wise schedule vs Eq. 1–5 (one KV copy per beam, OPT-2.7B, M = 8 GiB, step 32)",
     "",
     f"Predicted transfer: the paper's Eq. 1–5. Predicted transfer time: predicted bytes ÷ {bw:.2f} GiB/s.",
     "",
-    "| Beams | KV at the end | Baseline: transfer predicted / measured (GiB) | LBS: predicted / measured (GiB) | Baseline: transfer time pred. / meas. (s) | LBS: pred. / meas. (s) | Baseline total (s) | LBS total (s) | LBS speedup |",
+    "| Beams | KV at the end | Baseline: transfer predicted / measured (GiB) | Group-wise: predicted / measured (GiB) | Baseline: transfer time pred. / meas. (s) | Group-wise: pred. / meas. (s) | Baseline total (s) | Group-wise total (s) | Group-wise speedup |",
     "|---|---|---|---|---|---|---|---|---|",
 ]
 for n, r in R1.items():
@@ -100,15 +100,15 @@ for T in D.STEPS:
     o += [
         f"### Step {T} ({1920 // T} steps)",
         "",
-        "| Method | M (GiB) | Transfer measured (GiB) | Transfer predicted (GiB) | Match | Transfer (s) | Compute (s) | Other (s) | Total (s) | KV on GPU, peak (GiB) | LBS groups, max |",
+        "| Method | M (GiB) | Transfer measured (GiB) | Transfer predicted (GiB) | Match | Transfer (s) | Compute (s) | Other (s) | Total (s) | KV on GPU, peak (GiB) | Groups, max (group-wise) |",
         "|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     rows = [(st, mo, lab, D.M_MAIN) for st, mo, lab in D.METHODS]
     rows += [
         ("dedup", "baseline", "Baseline, dedup KV", D.M_CTRL),
-        ("dedup", "lbs", "LBS, dedup KV", D.M_CTRL),
+        ("dedup", "lbs", "Group-wise, dedup KV", D.M_CTRL),
         ("dedup", "baseline", "Baseline, dedup KV", D.M_SUPP),
-        ("dedup", "lbs", "LBS, dedup KV", D.M_SUPP),
+        ("dedup", "lbs", "Group-wise, dedup KV", D.M_SUPP),
     ]
     for st, mo, lab, M in rows:
         r = D.run("dedup", st, mo, D.N_DEDUP, T, M)
@@ -132,7 +132,7 @@ sp = D.speedups(R)
 o += [
     "### Speedups (ratios of total time, M = 2.2 GiB)",
     "",
-    "| Step | LBS vs baseline, per-beam KV | LBS vs baseline, both dedup | Dedup vs per-beam, baseline | Dedup vs per-beam, LBS |",
+    "| Step | Group-wise vs baseline, per-beam KV | Group-wise vs baseline, both dedup | Dedup vs per-beam, baseline | Dedup vs per-beam, group-wise |",
     "|---|---|---|---|---|",
 ]
 for T in D.STEPS:
@@ -142,7 +142,7 @@ for T in D.STEPS:
     )
 o += [
     "",
-    "LBS vs baseline with dedup KV at M = 1 GiB (supplementary): "
+    "Group-wise vs baseline with dedup KV at M = 1 GiB (supplementary): "
     + ", ".join(
         f"step {T} {x_(D.ratio(D.run('dedup', 'dedup', 'baseline', 32, T, 1), D.run('dedup', 'dedup', 'lbs', 32, T, 1)))}"
         for T in D.STEPS

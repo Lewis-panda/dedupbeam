@@ -1,12 +1,12 @@
 # DedupBeam
 
-DedupBeam stores the KV cache of shared beam prefixes once, on the host and on the GPU, instead of once per beam. On OPT-2.7B with 32 beams it cuts peak KV from 20 GiB to 1.6–3.4 GiB, and at the same 2.2 GiB GPU budget it runs 2.9–6.2× faster than group-wise KV-offloading schedules (as in LBS, MLSys 2026) and 11.8–22.1× faster than layer-wise KV offloading. It uses only standard PyTorch ops, with no custom kernel. Once both sides store shared KV once, group-wise scheduling adds only 1.00–1.17×.
+DedupBeam stores the KV cache of shared beam prefixes once, on the host and on the GPU, instead of once per beam. On OPT-2.7B with 32 beams it cuts peak KV from 20 GiB to 1.6–3.4 GiB, and at the same 2.2 GiB GPU budget it runs 2.9–6.2× faster than group-wise KV-offloading schedules (as in LBS, MLSys 2026) and 11.8–22.1× faster than layer-wise KV offloading. It uses only standard PyTorch ops, with no custom kernel. Once both schedules store shared KV once, group-wise scheduling adds only 1.00–1.17×.
 
 ![One GPU copy per shared segment instead of one per beam](figures/fig1_mechanism.png)
 
 ## Key results
 
-Setup: OPT-2.7B in FP16, 32 beams, beam width 2 (half of the beams survive each step), prompt of 128 tokens, 1,920 generated tokens, cumulative log-probability scoring, Gumbel-max sampling with seed 0, one RTX 5060 Ti 16 GB (PCIe 5.0 x8, 18.6 GiB/s host→GPU). M is the GPU memory reserved for KV. M = 2.2 GiB keeps roughly the ratio between total KV and M of Fig. 7 in the LBS paper (7 GB reserved for KV; 64 beams of OPT-6.7B at 2,048 tokens hold 64 GiB of per-beam KV by our count, about 9×; here 20 GiB vs 2.2 GiB).
+Setup: OPT-2.7B in FP16, 32 beams, beam width 2 (half of the beams survive each step), prompt of 128 tokens, 1,920 generated tokens, cumulative log-probability scoring, Gumbel-max sampling with seed 0, one RTX 5060 Ti 16 GB (PCIe 5.0 x8, 18.6 GiB/s host→GPU). Step length is the number of tokens each beam generates per beam-search step. M is the GPU memory reserved for KV. M = 2.2 GiB keeps roughly the ratio between total KV and M of Fig. 7 in the LBS paper (7 GB reserved for KV; 64 beams of OPT-6.7B at 2,048 tokens hold 64 GiB of per-beam KV by our count, about 9×; here 20 GiB vs 2.2 GiB).
 
 Two schedules are compared, each with one KV copy per beam and with DedupBeam's deduplicated KV: layer-wise KV offloading (the baseline) and a group-wise KV-offloading schedule (reordering as in LBS, MLSys 2026; see [Baselines](#baselines)). The ratios in the opening paragraph compare the "Group-wise, dedup KV" column with "Group-wise, per-beam KV" (2.9–6.2×) and with "Baseline, per-beam KV" (11.8–22.1×); 1.00–1.17× is "Group-wise vs baseline, both dedup".
 
@@ -44,7 +44,7 @@ In both designs the GPU still holds one copy of the shared KV per beam. Footnote
 
 ## Baselines
 
-The group-wise schedule follows the reordering in LBS and does not include LBS's prefix-aware grouping or prefetching. Both baselines are implemented here so that they run with the same model, sampling, scoring and GPU memory budget as DedupBeam. In the code, result files, tables and figures the group-wise schedule is the mode `lbs` and is labeled "LBS".
+The group-wise schedule follows the reordering in LBS and does not include LBS's prefix-aware grouping or prefetching. Both baselines are implemented here so that they run with the same model, sampling, scoring and GPU memory budget as DedupBeam. In the code and in result file names the group-wise schedule is the mode `lbs`.
 
 - **Per-beam engine** (`dedupbeam/perbeam.py`): step-wise beam search with one KV copy per beam, in three modes: all KV on the GPU, the layer-wise offloading baseline, and the group-wise schedule (reordering only; no prefix grouping, no prefetching). Its transfer volume matches the LBS paper's model (Eq. 1–5) to the byte.
 - **Check against the LBS paper's model** (per-beam KV, M = 8 GiB, step 32): 8 / 16 / 24 / 32 beams give group-wise speedups of 1.00× / 1.12× / 2.22× / 3.05×, and the transfer volumes (0 / 468.2 / 3,510.9 / 7,635.7 GiB for the baseline, 0 / 115.8 / 341.0 / 536.2 GiB for the group-wise schedule) match Eq. 1–5 exactly. LBS reports up to 6.85× with OPT-2.7B (its §5.5); its method also includes prefix-aware grouping and prefetching, and only reordering is implemented here.

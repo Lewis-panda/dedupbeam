@@ -13,33 +13,33 @@
 <circle cx="730.3" cy="132.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
 <circle cx="730.3" cy="132.0" r="4.5" fill="#eb6834"/>
 <text x="822.0" y="136.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">16,544.4 GiB</text>
-<text x="288.0" y="164.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, per-beam KV</text>
+<text x="288.0" y="164.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Group-wise, per-beam KV</text>
 <circle cx="585.1" cy="160.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
 <circle cx="585.1" cy="160.0" r="4.5" fill="#eb6834"/>
 <text x="822.0" y="164.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">623.4 GiB</text>
 <text x="288.0" y="192.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Baseline, dedup KV</text>
 <text x="304.0" y="192.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#52514e" text-anchor="start" font-style="italic">0 — all KV fits in M (predicted 0)</text>
-<text x="288.0" y="220.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, dedup KV</text>
+<text x="288.0" y="220.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Group-wise, dedup KV</text>
 <text x="304.0" y="220.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#52514e" text-anchor="start" font-style="italic">0 — all KV fits in M (predicted 0)</text>
 <text x="24.0" y="264.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#0b0b0b" text-anchor="start">Step 64</text>
 <text x="288.0" y="264.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Baseline, per-beam KV</text>
 <circle cx="730.3" cy="260.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
 <circle cx="730.3" cy="260.0" r="4.5" fill="#eb6834"/>
 <text x="822.0" y="264.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">16,544.4 GiB</text>
-<text x="288.0" y="292.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, per-beam KV</text>
+<text x="288.0" y="292.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Group-wise, per-beam KV</text>
 <circle cx="553.9" cy="288.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
 <circle cx="553.9" cy="288.0" r="4.5" fill="#eb6834"/>
 <text x="822.0" y="292.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">308.1 GiB</text>
 <text x="288.0" y="320.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Baseline, dedup KV</text>
 <text x="304.0" y="320.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#52514e" text-anchor="start" font-style="italic">0 — all KV fits in M (predicted 0)</text>
-<text x="288.0" y="348.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, dedup KV</text>
+<text x="288.0" y="348.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Group-wise, dedup KV</text>
 <text x="304.0" y="348.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#52514e" text-anchor="start" font-style="italic">0 — all KV fits in M (predicted 0)</text>
 <text x="24.0" y="392.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#0b0b0b" text-anchor="start">Step 128</text>
 <text x="288.0" y="392.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Baseline, per-beam KV</text>
 <circle cx="730.3" cy="388.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
 <circle cx="730.3" cy="388.0" r="4.5" fill="#eb6834"/>
 <text x="822.0" y="392.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">16,544.4 GiB</text>
-<text x="288.0" y="420.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, per-beam KV</text>
+<text x="288.0" y="420.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Group-wise, per-beam KV</text>
 <circle cx="522.0" cy="416.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
 <circle cx="522.0" cy="416.0" r="4.5" fill="#eb6834"/>
 <text x="822.0" y="420.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">150.0 GiB</text>
@@ -47,7 +47,7 @@
 <circle cx="581.8" cy="444.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
 <circle cx="581.8" cy="444.0" r="4.5" fill="#2a78d6"/>
 <text x="822.0" y="448.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">579.0 GiB</text>
-<text x="288.0" y="476.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">LBS, dedup KV</text>
+<text x="288.0" y="476.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#52514e" text-anchor="end">Group-wise, dedup KV</text>
 <circle cx="433.4" cy="472.0" r="7" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/>
 <circle cx="433.4" cy="472.0" r="4.5" fill="#2a78d6"/>
 <text x="822.0" y="476.0" font-family="DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" fill="#0b0b0b" text-anchor="start">20.3 GiB</text>

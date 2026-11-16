@@ -12,9 +12,9 @@ M_MAIN, M_CTRL, M_SUPP = 2.2, 8, 1
 PROMPT, GEN, N_DEDUP = 128, 1920, 32
 METHODS = [  # (store, mode, label)
     ("percopy", "baseline", "Baseline, per-beam KV"),
-    ("percopy", "lbs", "LBS, per-beam KV"),
+    ("percopy", "lbs", "Group-wise, per-beam KV"),
     ("dedup", "baseline", "Baseline, dedup KV"),
-    ("dedup", "lbs", "LBS, dedup KV"),
+    ("dedup", "lbs", "Group-wise, dedup KV"),
 ]
 GPU = "RTX 5060 Ti 16 GB"
 
